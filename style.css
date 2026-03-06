@@ -441,8 +441,11 @@ h3 {
   border-radius: var(--radius);
   padding: 2rem;
   text-align: center;
-  margin: 2rem 0;
+  margin: 2rem auto;
   overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .equation {
@@ -474,12 +477,14 @@ h3 {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius);
   padding: 2.5rem;
-  margin: 2rem 0;
+  margin: 2rem auto;
   text-align: center;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 .molecule-svg {
   max-width: 500px;
   margin: 0 auto;
