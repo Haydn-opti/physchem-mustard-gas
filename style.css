@@ -481,6 +481,7 @@ h3 {
 .molecule-svg {
   max-width: 500px;
   margin: 0 auto;
+  display: block;
 }
 
 /* ===== TIMELINE ===== */
