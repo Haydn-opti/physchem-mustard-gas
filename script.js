@@ -29,66 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
     reveals.forEach(el => observer.observe(el));
   }
 
-  // ===== QUIZ LOGIC =====
-  const quizQuestions = document.querySelectorAll('.quiz-question');
-  let answered = 0;
-  let correct = 0;
-  const totalQuestions = quizQuestions.length;
-
-  quizQuestions.forEach(question => {
-    const options = question.querySelectorAll('.quiz-option');
-    const feedback = question.querySelector('.quiz-feedback');
-    const correctAnswer = question.dataset.answer;
-
-    options.forEach(option => {
-      option.addEventListener('click', () => {
-        // Prevent re-answering
-        if (question.classList.contains('answered')) return;
-        question.classList.add('answered');
-        answered++;
-
-        const selected = option.dataset.value;
-        const isCorrect = selected === correctAnswer;
-
-        if (isCorrect) {
-          option.classList.add('correct');
-          correct++;
-          if (feedback) {
-            feedback.textContent = '✓ Correct!';
-            feedback.className = 'quiz-feedback show correct-fb';
-          }
-        } else {
-          option.classList.add('incorrect');
-          // Highlight the correct one
-          options.forEach(o => {
-            if (o.dataset.value === correctAnswer) o.classList.add('correct');
-          });
-          if (feedback) {
-            feedback.textContent = '✗ Not quite — see the correct answer highlighted above.';
-            feedback.className = 'quiz-feedback show incorrect-fb';
-          }
-        }
-
-        // Disable all options
-        options.forEach(o => { o.disabled = true; });
-
-        // Show score if all answered
-        if (answered === totalQuestions) {
-          const scoreEl = document.querySelector('.quiz-score');
-          if (scoreEl) {
-            scoreEl.classList.add('show');
-            scoreEl.querySelector('.score-number').textContent = `${correct} / ${totalQuestions}`;
-            const pct = Math.round((correct / totalQuestions) * 100);
-            let msg = 'Great job!';
-            if (pct < 50) msg = 'Review the content and try again!';
-            else if (pct < 80) msg = 'Good effort — revisit the tricky ones!';
-            scoreEl.querySelector('.score-msg').textContent = msg;
-          }
-        }
-      });
-    });
-  });
-
   // ===== ACTIVE NAV LINK =====
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-links a').forEach(a => {
@@ -97,4 +37,81 @@ document.addEventListener('DOMContentLoaded', () => {
       a.classList.add('active');
     }
   });
+
+  // ===== MATCH-CUT TEXT CYCLER =====
+  const matchEl = document.querySelector('.matchcut');
+  if (matchEl) {
+    const phrases = [
+      { text: 'modern cancer treatment.', style: 'style-italic' },
+      { text: 'the Geneva Protocol.', style: 'style-mono' },
+      { text: 'a revolution in oncology.', style: 'style-bold' },
+      { text: 'international treaties.', style: 'style-spaced' },
+      { text: 'the fight against cancer.', style: 'style-script' },
+      { text: 'chemotherapy.', style: 'style-editorial' },
+      { text: 'the laws of war.', style: 'style-mono' },
+      { text: 'decades of medical research.', style: 'style-thin' },
+      { text: 'a global arms ban.', style: 'style-spaced' },
+      { text: 'modern pharmacology.', style: 'style-italic' },
+    ];
+
+    const allStyles = [...new Set(phrases.map(p => p.style))];
+    let lastLanded = 0;
+
+    function clearStyles() {
+      allStyles.forEach(s => matchEl.classList.remove(s));
+      matchEl.classList.remove('shuffling', 'landing');
+    }
+
+    function pickRandom(excludeIndex) {
+      let idx;
+      do { idx = Math.floor(Math.random() * phrases.length); }
+      while (idx === excludeIndex);
+      return idx;
+    }
+
+    function runShuffle() {
+      // Rapid shuffle phase: ~12-18 flicks, speeding up then slowing down
+      const totalFlicks = 12 + Math.floor(Math.random() * 7);
+      let flick = 0;
+
+      matchEl.classList.add('shuffling');
+
+      function doFlick() {
+        const idx = pickRandom(lastLanded);
+        clearStyles();
+        matchEl.classList.add('shuffling');
+        matchEl.classList.add(phrases[idx].style);
+        matchEl.textContent = phrases[idx].text;
+
+        flick++;
+        if (flick < totalFlicks) {
+          // Start fast (~60ms), decelerate toward the end
+          const progress = flick / totalFlicks;
+          const delay = 50 + progress * progress * 140;
+          setTimeout(doFlick, delay);
+        } else {
+          // Land on the final choice
+          const landIdx = pickRandom(lastLanded);
+          lastLanded = landIdx;
+
+          clearStyles();
+          matchEl.classList.add(phrases[landIdx].style);
+          matchEl.textContent = phrases[landIdx].text;
+          matchEl.classList.add('landing');
+
+          // Hold for 3-5 seconds, then shuffle again
+          const holdTime = 3000 + Math.random() * 2000;
+          setTimeout(() => {
+            clearStyles();
+            runShuffle();
+          }, holdTime);
+        }
+      }
+
+      doFlick();
+    }
+
+    // Start after hero entrance animation
+    setTimeout(runShuffle, 3000);
+  }
 });

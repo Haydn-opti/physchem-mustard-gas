@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mustard Gas — The Chemistry of Chemical Warfare</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <nav>
@@ -27,23 +29,36 @@
     </div>
   </nav>
 
-  <main>
-    <section class="hero">
+  <section class="hero">
+    <div class="hero-video-bg">
+      <iframe
+        src="https://www.youtube.com/embed/M-l3BWg5q4Y?autoplay=1&mute=1&loop=1&playlist=M-l3BWg5q4Y&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        aria-hidden="true">
+      </iframe>
+      <div class="hero-video-overlay"></div>
+    </div>
+    <div class="hero-content">
       <p class="hero-eyebrow">Chemical Warfare in WWI</p>
-      <h1>The weapon that changed the rules of war&thinsp;—&thinsp;and accidentally launched <em>modern cancer treatment.</em></h1>
+      <h1>The weapon that changed the rules of war&thinsp;—&thinsp;and launched <span class="matchcut-wrap"><span class="matchcut" data-landed="false">modern cancer treatment.</span></span></h1>
       <p class="hero-subtitle">
-        Mustard gas is one of history's most devastating chemical weapons. But the same molecular properties that make it lethal also made it the unlikely origin of chemotherapy. Explore the chemistry behind both.
+        Mustard gas is one of history's most devastating chemical weapons. But the same molecular properties that make
+        it lethal also made it the unlikely origin of chemotherapy. Explore the chemistry behind both.
       </p>
       <div class="hero-cta">
         <a href="molecule.html" class="btn btn-primary">Start Exploring →</a>
         <a href="sources.html" class="btn btn-ghost">View Sources</a>
       </div>
-    </section>
+    </div>
+  </section>
 
+  <main>
     <section class="content-section reveal">
       <h2>Six chapters. One molecule.</h2>
       <p>
-        From the atomic bonds that define its structure to the battlefields where it was deployed, this site traces mustard gas through every level — molecular, industrial, historical, and medical.
+        From the atomic bonds that define its structure to the battlefields where it was deployed, this site traces
+        mustard gas through every level — molecular, industrial, historical, and medical.
       </p>
 
       <div class="nav-card-grid">
@@ -67,23 +82,29 @@
           <h3>The Legacy</h3>
           <p>From nitrogen mustards to chemotherapy, and the Chemical Weapons Convention.</p>
         </a>
-        <a href="quiz.html" class="nav-card">
-          <span class="card-number">05</span>
-          <h3>Test Yourself</h3>
-          <p>A quick quiz to check your understanding of the chemistry and history.</p>
-        </a>
         <a href="sources.html" class="nav-card">
-          <span class="card-number">06</span>
+          <span class="card-number">05</span>
           <h3>Works Cited</h3>
           <p>Full MLA citations for every source used across this project.</p>
         </a>
       </div>
     </section>
 
-  <footer>
-    <p>Hayden Chen · Chemical Warfare in WWI · <a href="sources.html">Works Cited</a></p>
-  </footer>
+    <!-- PAGE NAV -->
+    <div class="page-nav">
+      <a href="molecule.html" class="next">
+        <span class="nav-dir">Next →</span>
+        <span class="nav-title">The Molecule</span>
+      </a>
+    </div>
+
+    <footer>
+      <p>Hayden Chen · Chemical Warfare in WWI · <a href="sources.html">Works Cited</a></p>
+    </footer>
+
+  </main>
 
   <script src="script.js"></script>
 </body>
+
 </html>

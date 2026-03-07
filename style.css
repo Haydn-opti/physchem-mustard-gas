@@ -1,5 +1,5 @@
 /* ===== FONTS ===== */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&family=Bebas+Neue&family=Instrument+Serif:ital@0;1&display=swap');
 
 /* ===== CSS VARIABLES ===== */
 :root {
@@ -182,16 +182,68 @@ main {
   z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: calc(var(--nav-height) + 3rem) 2rem 4rem;
+  padding: 3rem 2rem 4rem;
 }
 
 /* ===== HERO ===== */
 .hero {
+  position: relative;
+  overflow: hidden;
   min-height: calc(100vh - var(--nav-height));
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4rem 0 2rem;
+  padding: calc(var(--nav-height) + 4rem) 0 3rem;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+/* ===== HERO VIDEO BACKGROUND ===== */
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-video-bg iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Oversized to fill container at 16:9, then scaled up ~25% to crop black borders */
+  width: max(100%, calc(100vh * 1.7778));
+  height: max(100%, calc(100vw * 0.5625));
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(1.4);
+  opacity: 0.45;
+  pointer-events: none;
+  border: none;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom,
+      rgba(10,11,13,0.55) 0%,
+      rgba(10,11,13,0.3) 45%,
+      rgba(10,11,13,0.72) 100%
+    ),
+    linear-gradient(to right,
+      rgba(10,11,13,0.4) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(10,11,13,0.4) 100%
+    );
 }
 
 .hero-eyebrow {
@@ -218,9 +270,96 @@ main {
   animation: fadeUp 0.8s ease forwards 0.4s;
 }
 
-.hero h1 em {
-  font-style: italic;
+/* ===== MATCH-CUT TEXT CYCLER ===== */
+
+/* Fixed-height container — absorbs all size/wrap changes from cycling text */
+.matchcut-wrap {
+  display: block;
+  position: relative;
+  height: 1.45em; /* 1.45× h1 font-size: covers style-spaced (1.25em × 1.1 line-height ≈ 1.38em) */
+  margin-top: 0.15em;
+  overflow: hidden;
+}
+
+.matchcut {
+  position: absolute;
+  top: 0;
+  left: 0;
   color: var(--text-accent);
+  transition: none;
+}
+
+/* During rapid shuffle — blurred, half-visible */
+.matchcut.shuffling {
+  filter: blur(2px);
+  opacity: 0.5;
+}
+
+/* When it lands — sharp snap-in */
+.matchcut.landing {
+  animation: matchLand 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes matchLand {
+  0%   { filter: blur(3px); opacity: 0.4; }
+  40%  { filter: blur(0); opacity: 1; }
+  60%  { filter: blur(0); opacity: 1; transform: scale(1.015); }
+  100% { filter: blur(0); opacity: 1; transform: scale(1); }
+}
+
+/* --- Style variants --- */
+.matchcut.style-italic {
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+.matchcut.style-mono {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.matchcut.style-bold {
+  font-weight: 900;
+  font-family: var(--font-display);
+  font-size: 1.05em;
+}
+
+.matchcut.style-spaced {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 1.25em;
+}
+
+.matchcut.style-script {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.08em;
+  letter-spacing: -0.01em;
+  text-decoration: underline;
+  text-decoration-color: rgba(200,204,68,0.35);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+.matchcut.style-thin {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-style: normal;
+  font-size: 1.02em;
+}
+
+.matchcut.style-editorial {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.15em;
+  letter-spacing: -0.01em;
 }
 
 .hero-subtitle {
